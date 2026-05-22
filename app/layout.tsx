@@ -88,14 +88,38 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  manifest: "/site.webmanifest",
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
-      { url: "/logo.png", sizes: "32x32", type: "image/png" },
-      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any", rel: "icon" },
+      { url: "/icons/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icons/icon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/icons/favicon.svg",
+        color: "#0f5045",
+      },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Shri Freight",
+    statusBarStyle: "default",
+  },
+  other: {
+    "msapplication-TileColor": "#0f5045",
+    "msapplication-TileImage": "/icons/icon-192.png",
   },
   category: "Logistics",
 };

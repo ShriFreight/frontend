@@ -20,6 +20,9 @@ import {
 import SectionHeader from "@/components/SectionHeader";
 import CTASection from "@/components/CTASection";
 import ProcessFlow from "@/components/ProcessFlow";
+import DutyOptimizer from "@/components/DutyOptimizer";
+import ComplianceScore from "@/components/ComplianceScore";
+import CargoMixDonut from "@/components/CargoMixDonut";
 import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
@@ -221,15 +224,34 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* MODES */}
+      {/* DUTY OPTIMIZER — Infographic */}
       <section className="section bg-brand-50/40">
+        <div className="container-x">
+          <SectionHeader
+            eyebrow="The savings, visualized"
+            title="Where the 15–25% duty savings actually come from."
+            description="A breakdown of the typical landed-cost stack on a $100 shipment — before and after Shri Freight Advisory steps in."
+          />
+          <Reveal direction="up" className="mt-14">
+            <DutyOptimizer />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MODES + Cargo mix donut */}
+      <section className="section">
         <div className="container-x">
           <SectionHeader
             eyebrow="Modes of transport"
             title="Air, ocean, surface, express — covered."
-            description="Whatever the lane, we design and operate it with the same compliance-first playbook."
+            description="Whatever the lane, we design and operate it with the same compliance-first playbook. A typical client cargo mix is shown below."
           />
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal direction="up" className="mt-12">
+            <div className="rounded-3xl border border-ink-900/5 bg-white p-6 shadow-soft sm:p-9">
+              <CargoMixDonut />
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {modes.map(({ icon: Icon, title, desc }, i) => (
               <Reveal key={title} delay={i * 80} direction="up">
                 <div className="group h-full rounded-2xl border border-ink-900/5 bg-white p-7 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-glow">
@@ -250,7 +272,7 @@ export default function ServicesPage() {
       </section>
 
       {/* PROCESS — Visual flow */}
-      <section className="section">
+      <section className="section bg-brand-50/40">
         <div className="container-x">
           <SectionHeader
             eyebrow="Our process"
@@ -259,6 +281,20 @@ export default function ServicesPage() {
           />
           <Reveal direction="up" className="mt-14 sm:mt-16">
             <ProcessFlow />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* COMPLIANCE SCORE — Radial gauge infographic */}
+      <section className="section">
+        <div className="container-x">
+          <SectionHeader
+            eyebrow="Compliance, scored"
+            title="Every shipment passes a 5-pillar health check."
+            description="A composite score across documentation, country rules, HS codes, duty optimization and tech-enabled checks — graded shipment by shipment."
+          />
+          <Reveal direction="up" className="mt-14">
+            <ComplianceScore />
           </Reveal>
         </div>
       </section>
