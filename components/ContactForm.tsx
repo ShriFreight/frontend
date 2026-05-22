@@ -1,38 +1,50 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
-type Status = "idle" | "submitting" | "success";
+type Status = "idle" | "submitting" | "success" | "error";
+
+const WEB3FORMS_ACCESS_KEY = "1ed22a55-36f7-4a60-b32b-1942e7a89053";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
+    setErrorMessage("");
     const form = e.currentTarget;
-    const data = new FormData(form);
+    const formData = new FormData(form);
 
-    const subject = encodeURIComponent(
-      `Inquiry from ${data.get("name") || "Website"} — ${
-        data.get("service") || "General"
+    formData.append("access_key", WEB3FORMS_ACCESS_KEY);
+    formData.append(
+      "subject",
+      `Inquiry from ${formData.get("name") || "Website"} — ${
+        formData.get("service") || "General"
       }`,
     );
-    const body = encodeURIComponent(
-      `Name: ${data.get("name") || ""}\n` +
-        `Company: ${data.get("company") || ""}\n` +
-        `Email: ${data.get("email") || ""}\n` +
-        `Phone: ${data.get("phone") || ""}\n` +
-        `Service Interest: ${data.get("service") || ""}\n\n` +
-        `Message:\n${data.get("message") || ""}`,
-    );
+    formData.append("from_name", "Shri Freight Website");
 
-    setTimeout(() => {
-      window.location.href = `mailto:info.shrifreightadvisory@gmail.com?subject=${subject}&body=${body}`;
-      setStatus("success");
-      form.reset();
-    }, 500);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+        setErrorMessage(data.message || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+    }
   }
 
   return (
@@ -101,7 +113,7 @@ export default function ContactForm() {
             </>
           ) : status === "success" ? (
             <>
-              <CheckCircle2 size={16} /> Email opened
+              <CheckCircle2 size={16} /> Message sent
             </>
           ) : (
             <>
@@ -110,6 +122,20 @@ export default function ContactForm() {
           )}
         </button>
       </div>
+
+      {status === "success" && (
+        <div className="flex items-start gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+          <CheckCircle2 size={16} className="mt-0.5 shrink-0" />
+          <span>Thanks for reaching out — our team will get back to you shortly.</span>
+        </div>
+      )}
+
+      {status === "error" && (
+        <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <AlertCircle size={16} className="mt-0.5 shrink-0" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
     </form>
   );
 }
